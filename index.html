@@ -131,7 +131,7 @@
 
   <div class="container-fluid my-3">
     <h2 class="section-title">Trending Show</h2>
-    <div class="row row-cards">
+    <div class="row row-cards" id="trendingShow">
       <div class="col-12 col-md-3 col-lg-2 p-0">
         <div class="card brightness my-0">
           <img src="assets/media/media0.webp" class="card-img-top" alt="...">
@@ -319,6 +319,43 @@
     integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
     crossorigin="anonymous"></script>
   <script src="script.js"></script>
+  <script>
+
+    const url = "https://striveschool-api.herokuapp.com/api/movies/Drama"
+    const category = new URLSearchParams(window.location.search).get('category')
+
+    const movies = () => {
+      fetch(url, {
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGRjNzMzNGIzNTgxNzAwMTVjMjI3NWIiLCJpYXQiOjE2MjUyMTU2MjksImV4cCI6MTYyNjQyNTIyOX0.6dLkJUYuUgbZhd39cCKYrx2lNucjMBcgvtD068hMwLI",
+        }
+      }).then(resp => resp.json())
+        .then(data => {
+          let row = document.getElementById("trendingShow")
+          row.innerHTML = ""
+          data.forEach(movie => {
+
+            row.innerHTML += `<div class="col-12 col-md-3 col-lg-2 p-0">
+        <div class="card brightness my-0">
+          <img src="${movie.imageUrl}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">${movie.name}</h5>
+            <p class="card-text">${movie.description}</p>
+            <h5 class="card-title">${movie.category}</h5>
+            </div>
+          <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Netflix</div>
+        </div>
+      </div>`
+
+          })
+        }).catch(error => alert(error))
+
+    }
+    window.onload = function () {
+      movies()
+    }
+  </script>
 </body>
 
 </html>
